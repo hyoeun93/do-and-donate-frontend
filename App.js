@@ -1,53 +1,50 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux'
-import { StyleSheet, Text, View } from 'react-native';
+import { createStore, applyMiddleware } from 'redux';
+// import { logger } from 'redux-logger';
+import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import thunk from 'redux-thunk';
 import reducers from './src/reducers';
-import { createAppContainer } from 'react-navigation';
-import { createBottomTabNavigator } from 'react-navigation-tabs'
-import { createStackNavigator } from 'react-navigation-stack';
+import MainNavigator from './src/navigators/MainNavigator';
 
-import HomeScreen from './src/screens/HomeScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import SignupScreen from './src/screens/SignupScreen';
-import ChallengeScreen from './src/screens/ChallengeScreen';
-import MypageScreen from './src/screens/MypageScreen';
-
-
-const store = createStore(reducers)
-
-const LoginNavigator = createStackNavigator({
-  Login: {
-      screen: LoginScreen,
-  },
-  Signup: {
-      screen: SignupScreen,
-  }
-});
-
-const AppNavigator = createBottomTabNavigator(
-  {
-    Home: HomeScreen,
-    Challenges: ChallengeScreen,
-    MyPage: MypageScreen,
-    Login: LoginNavigator
-  },
-  {
-    initialRouteName: 'Home',
-  }
-);
-
-const AppContainer = createAppContainer(AppNavigator);
+// const store = createStore(reducers)
+const store = createStore(reducers, applyMiddleware(thunk))
 
 class App extends Component {
+  state = {
+    challenges: null
+    }
+
+  componentDidMount() {
+      fetch('http://192.168.1.245:3000/api/v1/challenges')
+      // fetch('http://192.168.1.245:3000//api/v1/challenges')
+      .then(res => res.json())
+      .then(data => {
+          // console.log(data);
+          this.setState({
+              challenges: data
+          })
+      })
+  }
+
   render() {
+    const STATUS_BAR_HEIGHT = Platform.OS === 'ios' ? 30 : StatusBar.currentHeight;
     return (
-      <Provider store={store}>
-        <AppContainer />
+      <Provider style={{ flex: 1}} store={store}>
+        {/* <View
+        style={{
+          width: "100%",
+          height: STATUS_BAR_HEIGHT,
+          backgroundColor: "#EBF5EE"
+      }}> */}
+        <StatusBar
+           backgroundColor="#1c313a"
+           barStyle="dark-content"
+         />
+         {/* </View> */}
+        <MainNavigator loginUser={this.loginUser} screenProps={{challenges:this.state.challenges}}/>
       <View>
-        {/* <Text>Total Challenges #</Text>
-        <Text>Total Participants #</Text>
-        <Text>Total Donated $</Text> */}
+       
       </View>
       </Provider>
     );
