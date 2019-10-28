@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { charityFetch } from '../actions/charityAction';
 import RNPickerSelect from 'react-native-picker-select';
@@ -15,7 +15,8 @@ class ChallengeDetail extends React.Component {
 
     handlePress = () => {
         console.log('hi')
-        fetch(`http://192.168.1.245:3000/api/v1/users/${this.props.currentUser.id}/user_challenges`, {
+        alert('You joined the challenge');
+        fetch(`http://192.168.6.96:3000/api/v1/users/${this.props.currentUser.id}/user_challenges`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -43,7 +44,7 @@ class ChallengeDetail extends React.Component {
     }
 
     handleAddComment = () => {
-        fetch(`http://192.168.1.245:3000/api/v1/challenges/${this.props.navigation.state.params.details.id}/challengecomments`, {
+        fetch(`http://192.168.6.96:3000/api/v1/challenges/${this.props.navigation.state.params.details.id}/challengecomments`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -58,13 +59,14 @@ class ChallengeDetail extends React.Component {
         .then(data => {
             console.log('COMENT LIST', this.state.commentlist)
             this.setState({
+                comment: '',
                 commentlist: [...this.state.commentlist, data.data]
             })
         })
     }
 
     componentDidMount() {
-            fetch(`http://192.168.1.245:3000/api/v1/challenges/${this.props.navigation.state.params.details.id}/challengecomments`)
+            fetch(`http://192.168.6.96:3000/api/v1/challenges/${this.props.navigation.state.params.details.id}/challengecomments`)
             .then(res => res.json())
             .then(data => {
                 console.log('fetchedComments', data)
@@ -72,43 +74,54 @@ class ChallengeDetail extends React.Component {
                     commentlist: data.data
                 })
             })
-
-        //     fetch(`http://10.9.111.98:3000/api/v1/users/${this.props.currentUser.id}/user_challenges`)
-        // .then(res => res.json())
-        // .then(data => {
-             
-        //     console.log('getUsesrChallenge', data)
-        //     this.setState({
-        //         userChallenges: data.data
-        //     })
-        // })
-        
     }
+
+    renderIncluded = () => {
+        const cName = this.props.navigation.state.params.details.title
+        const photos = this.props.navigation.state.params.included
+        return photos.map(arr => {
+            if(arr.type === "user_challenge") {
+                if(cName === arr.attributes.challenge.title) {
+                    if(arr.attributes.photos_url.length > 0) {
+                        return arr.attributes.photos_url.map(photo => {
+                            return(<Image key={Math.floor(Math.random() * 100) + 1} style={{width: 300, height: 300, alignSelf: 'center' }} source={{uri: photo}} />)
+                        })
+                    }
+                }
+            }
+        })
+    }
+
     render() {
-        console.log('ChallengeDetail', this.props.navigation.state.params.details)
+        console.log('ChallengeDetail', this.props.navigation.state.params)
+        const photos = this.props.navigation.state.params.included
         // console.log('Charities', this.props.charities)
-        console.log('currentUser', this.props.currentUser)
-        console.log('Challenge States', this.state)
+        // console.log('currentUser', this.props.currentUser)
+        // console.log('Challenge States', this.state)
             return(
                 <ScrollView style={styles.ScrollView}>
                     {/* <UserChallengeList userChallenges={this.state.userChallenges}/> */}
-                    {/* <Image 
-                    source={require(this.props.navigation.state.params.details)}
-                    /> */}
-                     <View style={{ alignItems: 'flex-start', paddingTop: 20, marginHorizontal: 50}}>
+                    <View style={{ alignItems: 'flex-start', paddingTop: 20, marginHorizontal: 50}}>
                     <Text style={styles.textStyle}>Explore More</Text>
                     </View>
                     <View style={styles.container}>
-                    <Text style={styles.subText}>Goal: {this.props.navigation.state.params.details.title}</Text>
-                    <Text style={styles.subText}>{this.props.navigation.state.params.details.description}</Text>
-                    <Text style={styles.subText}>Money Pot: ${this.props.navigation.state.params.details.money_pot}</Text>
-                    <Text style={styles.subText}>Payout: ${this.props.navigation.state.params.details.payout}</Text>
-                    <Text style={styles.subText}>Start Date: {this.props.navigation.state.params.details.start_date} </Text>
-                    <Text style={styles.subText}>End Date: {this.props.navigation.state.params.details.end_date} </Text>
-                    <Text style={styles.subText}>Donor: {this.props.navigation.state.params.details.donor.name}</Text>                    
+                    <Text style={styles.topText}>Goal</Text>
+                    <Text style={styles.mainText}>{this.props.navigation.state.params.details.title}</Text>
+                    <Text style={styles.subSubText}>{this.props.navigation.state.params.details.description}</Text>
+                    <Text></Text>
+                    <Text style={styles.nextText}>Start Date</Text>
+                    <Text style={styles.subText}>{this.props.navigation.state.params.details.start_date} </Text>
+                    <Text style={styles.nextText}>End Date</Text>
+                    <Text style={styles.subText}>{this.props.navigation.state.params.details.end_date} </Text>
+                    <Text style={styles.nextText}>Money Pot</Text>
+                    <Text style={styles.subText}>${this.props.navigation.state.params.details.money_pot}</Text>
+                    <Text style={styles.nextText}>Payout</Text>
+                    <Text style={styles.subText}>${this.props.navigation.state.params.details.payout}</Text>
+                    <Text style={styles.nextText}>Donor</Text>
+                    <Text style={styles.subText}>{this.props.navigation.state.params.details.donor.name}</Text>                    
                 
                 
-                <Button style={{marginTop: 100}} color="#283044" title="Join This Challenge" onPress={this.handlePress}/>
+                <Button style={{marginTop: 150}} color="#8B786D" title="Join This Challenge" onPress={this.handlePress}/>
                 
                 <View>
                 {Object.keys(this.props.currentUser).length === 0
@@ -116,7 +129,8 @@ class ChallengeDetail extends React.Component {
                 <Text></Text>
                 :
                 <TextInput 
-                style={{ lineHeight: 19, marginBottom: 20, marginTop: 10, height: 40, borderColor: 'gray', borderWidth: 1 }}
+                placeholder="comment"
+                style={styles.textBox}
                 multiline={true}
                 numberOfLines={4}
                 onChangeText={(value) => this.setState({ comment: value })}
@@ -131,14 +145,16 @@ class ChallengeDetail extends React.Component {
                 <Button color="#78A1BB" title="Add comments" onPress={this.handleAddComment}/>
                 }
                 <Button color="#78A1BB" title="View Comments" onPress={this.handleComment} />
+                <Text style={styles.photoText}>#Photos People Uploaded</Text>
+    
                 </View>
-                {/* {this.state.commentlist.map(comm => {
-                    return <Text key={comm.id}>{comm.attributes.content}</Text>
-                })}
-     */}
-                    {/* <Text>Photos: {this.props.navigation.state.params.details.img_url}</Text> */}
                 </View>
+                <ScrollView
+                horizontal={true}
+                >
+                {this.renderIncluded()}
                 </ScrollView>
+                </ScrollView >
             )
         
         
@@ -157,23 +173,68 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+      marginHorizontal: 50,
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
       marginTop: 10,
       marginBottom: 20
+    },
+    textBox: {
+        lineHeight: 19, 
+        marginBottom: 20, 
+        marginTop: 10, 
+        height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 1,
+        borderRadius: 10
     },
     textStyle: {
         marginBottom: 20,
         fontSize: 25,
         fontWeight: 'bold'
     },
-    subText: {
-        marginHorizontal: 10,
+    topText: {
+        color: '#8B786D',
+        marginBottom: 5,
+        fontSize: 25,
+        fontWeight: 'bold'
+    },
+    mainText: {
+        marginBottom: 20,
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    nextText: {
+        letterSpacing: 1,
+        lineHeight: 50,
         marginBottom: 10,
         color: '#212020',
-        fontSize: 14,
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    subSubText: {
+        letterSpacing: 1,
+        lineHeight: 50,
+        marginBottom: 10,
+        color: '#212020',
+        fontSize: 16,
+        lineHeight: 25,
+    },
+    subText: {
+        letterSpacing: 1,
+        lineHeight: 50,
+        marginBottom: 10,
+        color: '#212020',
+        fontSize: 16,
         lineHeight: 15,
-    }
+    },
+    photoText: {
+        letterSpacing: 1,
+        lineHeight: 15,
+        marginTop: 50,
+        color: '#212020',
+        fontSize: 16
+    },
 });
 
 

@@ -9,7 +9,7 @@ class ChallengeList extends React.Component{
     
     renderChallengeList = () => {
         return this.props.challenges.data.map(challenge => {
-            return <ChallengeCard key={challenge.id} challenge={challenge} /> 
+            return <ChallengeCard key={challenge.id} challenge={challenge} included={this.props.challenges.included} /> 
         })
     }
     render() {

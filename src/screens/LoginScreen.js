@@ -13,6 +13,10 @@ class LoginScreen extends React.Component {
 
     handleClick = async () => {
         await this.props.userLoginFetch(this.state);
+        this.setState({
+            email: "",
+            password: ""
+        })
         this.props.navigation.navigate('Challenges');
     }
     render() {

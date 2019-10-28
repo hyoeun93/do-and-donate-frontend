@@ -46,8 +46,7 @@ class HomeScreen extends React.Component {
                     <Text 
                     style={{
                         fontSize: 25,
-                        fontWeight: 'bold',
-                        color: '#78A1BB'
+                        color: '#283044'
                         }}>
                         Today
                     </Text>
@@ -55,12 +54,12 @@ class HomeScreen extends React.Component {
                     style={{
                     fontSize: 25,
                     marginTop: 5,
-                    color: '#283044'
+                    color: '#78A1BB'
                     }}>
                     {this.state.date}
                     </Text>
                 </View>
-                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 150}}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 110}}>
                     
                     <Text style={styles.textStyle}>Total Challenges #</Text>
                         <Text style={styles.subText}>{challenges.data.length}</Text>
@@ -79,12 +78,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center', 
         justifyContent: 'center', 
         textAlign: 'center',
+        color: '#283044',
+        fontSize: 18,
         fontWeight: 'bold',
-        color: '#283044'
+        marginBottom: 10,
+        marginTop: 15
     },
     subText: {
         fontWeight: 'bold',
-        color: '#78A1BB'
+        color: '#78A1BB',
+        fontSize: 15
     }
 })
 

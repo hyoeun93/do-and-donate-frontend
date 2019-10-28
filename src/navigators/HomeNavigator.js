@@ -11,8 +11,7 @@ const HomeNavigator = createStackNavigator(
             screen: Home,
             navigationOptions: () => ({
                 headerTitle: <ActionBarImage />,
-                headerStyle: { backgroundColor: '#FAFBF9' },
-                headerTitleStyle: { color: '#283044' },
+                // headerStyle: { backgroundColor: '#FAFBF9' }
             }),
         },
     }

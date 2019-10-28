@@ -36,7 +36,7 @@ class UserChallengeCard extends React.Component{
                                  <Text style={{fontSize: 10}}>🔵</Text>
                                 }
                         <TouchableOpacity key={RandomNumber} onPress={() => this.props.navigation.navigate('UserChallengeDetail', {challengeDetails: challenge})}> 
-                        <Text key={challenge.id}> {challenge.attributes.challenge.title}</Text>
+                        <Text style={styles.mainText} key={challenge.id}> {challenge.attributes.challenge.title}</Text>
                         </TouchableOpacity>
                         </Card>
                     ]
@@ -47,5 +47,10 @@ class UserChallengeCard extends React.Component{
     
 
 }
+const styles = StyleSheet.create({
+    mainText: {
+        fontSize: 15, 
+    }
+})
 
 export default withNavigation(UserChallengeCard);

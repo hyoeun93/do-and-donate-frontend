@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
 import thunk from 'redux-thunk';
 import reducers from './src/reducers';
 import MainNavigator from './src/navigators/MainNavigator';
+console.disableYellowBox = true;
 
 // const store = createStore(reducers)
 const store = createStore(reducers, applyMiddleware(thunk))
@@ -16,7 +17,7 @@ class App extends Component {
     }
 
   componentDidMount() {
-      fetch('http://192.168.1.245:3000/api/v1/challenges')
+      fetch('http://192.168.6.96:3000/api/v1/challenges')
       // fetch('http://192.168.1.245:3000//api/v1/challenges')
       .then(res => res.json())
       .then(data => {

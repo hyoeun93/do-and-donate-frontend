@@ -24,7 +24,7 @@ export const passwordChanged = (password) => {
 export const userLoginFetch = user => {
   
   return dispatch => {
-    return fetch("http://192.168.1.245:3000/api/v1/authenticate", {
+    return fetch("http://192.168.6.96:3000/api/v1/authenticate", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -34,8 +34,12 @@ export const userLoginFetch = user => {
       })
       .then(res => res.json())
       .then(data => {
-         AsyncStorage.setItem("token", data.token)
+        if(data.error) {
+          console.log('error')
+        } else {
+          AsyncStorage.setItem("token", data.token)
           dispatch(loginUser(data.currentUser))
+        }
       })
   }
   
@@ -45,7 +49,7 @@ export const saveUser = user => {
   // debugger 
       alert('You are Signed-Up!');
       return dispatch => {
-        return fetch('http://192.168.1.245:3000/api/v1/users', {
+        return fetch('http://192.168.6.96:3000/api/v1/users', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

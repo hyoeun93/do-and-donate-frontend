@@ -9,7 +9,7 @@ import ChallengeDetail from './ChallengeDetail';
 
 class ChallengeCard extends React.Component {
     render() {
-        console.log('ChallengeCard', this.props.challenge.attributes)
+        console.log('ChallengeCard', this.props)
         if(!this.props.challenge) {
             return <Text>'No Challenge Card'</Text>
         }
@@ -25,7 +25,7 @@ class ChallengeCard extends React.Component {
                     <Button
                     color="#78A1BB"
                     title="More details"
-                    onPress={() => this.props.navigation.navigate('ChallengeDetail', {details: details})}
+                    onPress={() => this.props.navigation.navigate('ChallengeDetail', {details: details, included: this.props.included})}
                     />
                 </Card>
                 {/* <Card>

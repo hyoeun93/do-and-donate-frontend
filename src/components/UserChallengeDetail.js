@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Button, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { charityFetch } from '../actions/charityAction';
 import { connect } from 'react-redux';
@@ -19,9 +19,10 @@ class UserChallengeDetail extends React.Component{
     handleSubmit = () => { 
         const userchallenge = this.props.navigation.state.params.challengeDetails
         console.log('submitted, and update UserChallenge') 
+        alert('You submitted the Challenge!');
         // this.props.postPhoto(this.state.image);
         
-        fetch(`http://192.168.1.245:3000/api/v1/users/${this.props.currentUser.id}/user_challenges/${userchallenge.id}`,{
+        fetch(`http://192.168.6.96:3000/api/v1/users/${this.props.currentUser.id}/user_challenges/${userchallenge.id}`,{
             method: 'PATCH',
             headers: {
                 'Accept': 'application/json',
@@ -70,44 +71,51 @@ class UserChallengeDetail extends React.Component{
                 <ScrollView style={{ flex: 1 }}>
                 <View style={styles.container}>
                 <Text style={styles.titleText}>{userchallenge.attributes.challenge.title}</Text>
-                <Text style={styles.subText}> Start Date: {userchallenge.attributes.challenge.start_date}</Text>
-                <Text style={styles.subText}>End Date: {userchallenge.attributes.challenge.end_date}</Text>
+                <Text style={styles.nextText}>Start Date</Text>
+                <Text style={styles.subText}> {userchallenge.attributes.challenge.start_date}</Text>
+                <Text style={styles.nextText}>End Date</Text>
+                <Text style={styles.subText}>{userchallenge.attributes.challenge.end_date}</Text>
                 {userchallenge.attributes.completed ? <Text style={styles.subText}>Status: Inactive</Text> : <Text style={styles.subText}>Status: Active</Text>}
                 <Text style={styles.subText}>Payout: ${userchallenge.attributes.challenge.payout}</Text>
                 <View style={{flex:.5, marginBottom: 10}}>
                 {/* userchallenge.attributes.charity !== undefined  */}
                 {userchallenge.attributes.completed 
                 ? 
-                <Text>You donated to: {userchallenge.attributes.charity.name}</Text> 
+                <Text style={styles.subText}>You donated to: {userchallenge.attributes.charity.name}</Text> 
                 : 
                 <Text></Text>
                 }
                 </View>
-
+                
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 {userchallenge.attributes.completed 
                 ?
-                (<Text>🎊</Text>,
+                [<Text>🎊</Text>,
                 <Text>YOU DID IT!</Text>
-                )
+                ]
                 :
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View>
                 <Button
                 color="#A6A6A8"
                 title="Pick an image from camera roll"
                 onPress={this._pickImage}
                 />
                 {image &&
-                <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                <Image source={{ uri: image }} style={{ width: 300, height: 300, alignSelf: 'center' }} />}
                 </View>
                 }
 
-                {userchallenge.attributes.photos_url.length < 1
+                {userchallenge.attributes.photos_url.length > 0
                 ?
-                <Text>No Photos</Text>
-                :
                 userchallenge.attributes.photos_url.map(url => {
-                    return <Image key={Math.floor(Math.random() * 100) + 1} style={{width: 100, height: 100}} source={{ uri: url}} />
+                    return (
+                    <View style={{padding: 3}}>
+                        <Image key={Math.floor(Math.random() * 100) + 1} style={{width: 300, height: 300}} source={{ uri: url}} />
+                    </View>
+                    )
                 })
+                :
+                <Text></Text>
                 }
 
                 {userchallenge.attributes.completed 
@@ -138,15 +146,13 @@ class UserChallengeDetail extends React.Component{
                 <Text></Text>
                 }
                 </View>
+                </View>
                 
                 </View>
             </ScrollView>
         )
     }    
 
-    // fetchPhotos = () => {
-
-    // }
     getPermissionAsync = async () => {
         if (Constants.platform.ios) {
           const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -174,7 +180,7 @@ class UserChallengeDetail extends React.Component{
         });
         }
         const userchallenge = this.props.navigation.state.params.challengeDetails;
-        fetch(`http://192.168.1.245:3000/api/v1/users/${this.props.currentUser.id}/user_challenges/${userchallenge.id}`,{
+        fetch(`http://192.168.6.96:3000/api/v1/users/${this.props.currentUser.id}/user_challenges/${userchallenge.id}`,{
             method: 'PATCH',
             headers: {
                 'Accept': 'application/json',
@@ -200,21 +206,35 @@ class UserChallengeDetail extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+        flex: 1,
+        backgroundColor: '#fff',
+        marginHorizontal: 50,
+      //   alignItems: 'center',
+      //   justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 20
     },
     titleText: {
         marginTop: 20,
+        marginBottom: 20,
+        fontSize: 25,
+        fontWeight: 'bold'
+    },
+    nextText: {
+        letterSpacing: 1,
+        lineHeight: 50,
         marginBottom: 10,
-        fontSize: 20,
+        color: '#212020',
+        fontSize: 16,
+        lineHeight: 15,
         fontWeight: 'bold'
     },
     subText: {
+        letterSpacing: 1,
+        lineHeight: 50,
         marginBottom: 10,
         color: '#212020',
-        fontSize: 14,
+        fontSize: 16,
         lineHeight: 15,
     },
     bottom: {

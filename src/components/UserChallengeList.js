@@ -10,7 +10,7 @@ class UserChallengeList extends React.Component{
 
     componentDidMount() {
             console.log('did mount', this.props.currentUser)
-            fetch(`http://192.168.1.245:3000/api/v1/users/${this.props.currentUser.id}/user_challenges`)
+            fetch(`http://192.168.6.96:3000/api/v1/users/${this.props.currentUser.id}/user_challenges`)
             // fetch(`http://localhost:3000/api/v1/users/5/user_challenges`)
             .then(res => res.json())
             .then(data => {
