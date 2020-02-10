@@ -15,15 +15,15 @@ and donating to a charity they pick at the same time.
 - Redux
 - Bootstrap
 
-##Backend
-Application backend and instructions for setup: [D^2 Backend](https://github.com/hyoeun93/do-and-donate-backend)
+## Backend
+- Application backend and instructions for setup: [D^2 Backend](https://github.com/hyoeun93/do-and-donate-backend)
 
-##Demo
-Video
+## Demo
+- [Video](https://vimeo.com/387333075)
 
-##Instructions
+## Instructions
 - expo start
 
-##Contributors
+## Contributors
 - Hyoeun Lee
 
