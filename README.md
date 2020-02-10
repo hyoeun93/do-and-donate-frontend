@@ -20,8 +20,9 @@ and donating to a charity they pick at the same time.
 
 ## Demo
 - Screenshots
-<img src="https://user-images.githubusercontent.com/49332991/74185244-35926700-4c16-11ea-86f7-4f62f9922eb2.png" width="100" height="500"/>
+<img src="https://user-images.githubusercontent.com/49332991/74185244-35926700-4c16-11ea-86f7-4f62f9922eb2.png"/>
 <img src="https://user-images.githubusercontent.com/49332991/74185247-37f4c100-4c16-11ea-9522-87d58bd0bff7.png"/>
+
 - [Video](https://vimeo.com/387333075)
 
 ## Instructions
