@@ -38,7 +38,7 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "@expo/webpack-config": "^0.8.0",
+    "@expo/webpack-config": "^0.17.3",
     "babel-preset-expo": "^7.0.0"
   },
   "private": true
